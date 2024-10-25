@@ -1,22 +1,23 @@
 import "./WeatherApp.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function WeatherApp() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [lon, setLon] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
+  const apiKey = "e21d2422a4cc47d1da222b30fb6012d2";
 
-    const apiKey = process.env.REACT_APP_API_KEY;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+  // Function to fetch weather data based on coordinates
+  const fetchWeatherByCoords = async (latitude, longitude) => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`;
 
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error("City not found");
+        throw new Error("Unable to fetch weather data");
       }
       const data = await response.json();
       setWeatherData(data);
@@ -24,6 +25,54 @@ function WeatherApp() {
       setError(err.message);
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (city) {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("City not found");
+        }
+        const data = await response.json();
+        setWeatherData(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+  };
+
+  // Function to get the user's location
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLat(position.coords.latitude);
+          setLon(position.coords.longitude);
+        },
+        (error) => {
+          setError("Unable to retrieve your location");
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    // Fetch weather data based on coordinates when lat and lon are available
+    if (lat && lon) {
+      fetchWeatherByCoords(lat, lon);
+    }
+  }, [lat, lon]);
+
+  // Call getUserLocation when the component mounts
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
   return (
     <div className="app-container">
