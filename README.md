@@ -1,6 +1,6 @@
 # the-weathaaa
 
-Containerized React application that uses the OpenWeatherAPI to display the weather and conditons in any city.
+Containerized React application that uses the OpenWeatherAPI to display the current weather conditons in any city. Users can opt into geolocation or enter in a city of their choice.
 
 Features a modern UI with dynamically shifting color gradients, a sleek, responsive weather card, and interactive elements,enhanced by subtle animations and floating particles to create an engaging experience.
 
