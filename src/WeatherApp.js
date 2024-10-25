@@ -10,7 +10,7 @@ function WeatherApp() {
     e.preventDefault();
     setError(null);
 
-    const apiKey = "e21d2422a4cc47d1da222b30fb6012d2";
+    const apiKey = process.env.REACT_APP_API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
 
     try {

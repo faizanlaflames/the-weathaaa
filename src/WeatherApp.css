@@ -163,7 +163,6 @@ body {
   }
 }
 
-/* Randomize particle positioning */
 .particle:nth-child(odd) {
   top: calc(100% * var(--random));
   left: calc(100% * var(--random));
