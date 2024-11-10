@@ -7,8 +7,9 @@ function WeatherApp() {
   const [error, setError] = useState(null);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-
-  const apiKey = "e21d2422a4cc47d1da222b30fb6012d2";
+  
+  
+  const apiKey = process.env.REACT_APP_API_KEY;
 
   // Function to fetch weather data based on coordinates
   const fetchWeatherByCoords = async (latitude, longitude) => {
